@@ -1,80 +1,47 @@
-const studentJSON = {
-    surname: "Иванов",
-    name: "Иван",
-    marks: [
-        { subject: "Математика", mark: 5 },
-        { subject: "Физика", mark: 4 },
-        { subject: "Химия", mark: 4 }
-    ]
-};
+class Figure {
+    #x;
+    #y;
 
-function printStudentInfo(student) {
-    console.log(`Фамилия: ${student.surname}`);
-    console.log(`Имя: ${student.name}`);
-    console.log("Оценки:");
-    student.marks.forEach(mark => {
-        console.log(` - ${mark.subject}: ${mark.mark}`);
-    });
-}
+    constructor(x, y) {
+        this.#x = x;
+        this.#y = y;
+    }
 
-printStudentInfo(studentJSON);
-
-class Mark {
-    constructor(subject, mark) {
-        this.subject = subject;
-        this.mark = mark;
+    square() {
+        return undefined;
     }
 }
 
-class Student {
-    constructor(surname, name) {
-        this.surname = surname;
-        this.name = name;
-        this.marks = [];
+class Circle extends Figure {
+    #r;
+
+    constructor(x, y, r) {
+        super(x, y);
+        this.#r = r;
     }
 
-    addMark(subject, mark) {
-        const newMark = new Mark(subject, mark);
-        this.marks.push(newMark);
-    }
-
-    removeMarksBySubject(subject) {
-        this.marks = this.marks.filter(mark => mark.subject !== subject);
-    }
-
-    getAverageMark() {
-        if (this.marks.length === 0) return 0;
-        const total = this.marks.reduce((sum, mark) => sum + mark.mark, 0);
-        return total / this.marks.length;
-    }
-
-    getMarksBySubject(subject) {
-        return this.marks.filter(mark => mark.subject === subject);
-    }
-
-    printInfo() {
-        console.log(`Фамилия: ${this.surname}`);
-        console.log(`Имя: ${this.name}`);
-        console.log("Оценки:");
-        this.marks.forEach(mark => {
-            console.log(` - ${mark.subject}: ${mark.mark}`);
-        });
+    square() {
+        return Math.PI * this.#r * this.#r;
     }
 }
 
-const student = new Student("Павлов", "Георгий");
-student.addMark("Математика", 5);
-student.addMark("Математика", 4);
-student.addMark("Математика", 5);
-student.addMark("Физика", 4);
-student.addMark("Физика", 5);
-student.addMark("Химия", 3);
+class Rectangle extends Figure {
+    #h;
+    #w;
 
-student.printInfo();
-console.log(`Средняя оценка: ${student.getAverageMark()}`);
+    constructor(x, y, h, w) {
+        super(x, y);
+        this.#h = h;
+        this.#w = w;
+    }
 
-console.log("Оценки по физике:", student.getMarksBySubject("Физика"));
+    square() {
+        return this.#h * this.#w;
+    }
+}
 
-student.removeMarksBySubject("Химия");
-console.log("Удалены оценки по химии:");
-student.printInfo();
+const circle = new Circle(0, 0, 5);
+console.log(`Площадь круга с радиусом 5: ${circle.square().toFixed(2)}`);
+
+const rectangle = new Rectangle(0, 0, 4, 6);
+console.log(`Площадь прямоугольника 4x6: ${rectangle.square()}`); 
