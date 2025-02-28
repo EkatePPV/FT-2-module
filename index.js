@@ -1,64 +1,75 @@
-/*    5. Напишите функцию, принимающую на вход массив вещественных
-чисел и возвращающую количество элементов, равных предыдущему
-элементу. */
+// 1. Реализуйте функцию для поиска в двух заданных массивах элементов, которые присутствуют в обоих массивах. Используйте Set
 
-let result = 0;
+function findCommonElements(arr1, arr2) {
+    if (!Array.isArray(arr1) || !Array.isArray(arr2)) return []; 
 
-function countEqualToPrevious(arr) {
-
-    let count = 0; 
-
-    for (let i = 1; i < arr.length; i++) {
-        if (arr[i] === arr[i - 1]) { 
-            count++;
-        }
-    }
-
-    return count;
-    
+    const set1 = new Set(arr1);
+    return [...new Set(arr2.filter(element => set1.has(element)))]; 
 }
 
-const arr = [1.6, -2, 1.3, 1.3, 3, 2, 2.1, 2.1, 0, 3.9];
-console.log("Массив чисел: ", arr);
-result = countEqualToPrevious(arr);
-console.log("Количество элементов, равных предыдущему элементу: ", result);
+console.log("№1");
+
+const arr1 = [1, 2, 2, 3, 3, 3, 4, 5];
+const arr2 = [1, 2, 2, 2, 3, 3, 6, 7, 8];
+console.log("Массивы:", arr1, arr2);
+console.log("Общие элементы: ", findCommonElements(arr1, arr2)); 
 console.log(" ");
 
-/* Напишите функцию, принимающую на вход вещественную
-прямоугольную матрицу и возвращающую сумму элементов в тех
-строках, которые содержат хотя бы один отрицательный элемент. */
+// 2. Реализуйте функцию, которая подсчитывает количество вхождений каждого элемента в массиве. Используйте Map
+function countOccurrences(arr) {
+    if (!Array.isArray(arr)) return new Map(); 
 
-function sumNegativeRows(matrix) {
-    if (!Array.isArray(matrix) || matrix.length === 0) {
-        console.error("Ошибка: параметр функции должен быть не пустым массивом.");
-        return 0;
-    }
-
-    let totalSum = 0;
-
-    for (const row of matrix) {
-        if (!Array.isArray(row)) {
-            console.error("Ошибка: все строки матрицы должны быть массивами.");
-            return 0;
-        }
-
-        // Проверка наличия хотя бы одного отрицательного элемента в строке
-        const hasNegative = row.some(element => typeof element === 'number' && element < 0);
-
-        // Если есть отрицательный элемент, добавляем сумму этой строки к общему результату
-        if (hasNegative) {
-            totalSum += row.reduce((acc, curr) => acc + (typeof curr === 'number' ? curr : 0), 0);
-        }
-    }
-
-    return totalSum;
+    return arr.reduce((occurrences, element) => {
+        occurrences.set(element, (occurrences.get(element) || 0) + 1);
+        return occurrences;
+    }, new Map());
 }
 
-const matrix = [
-    [1.5, 2.3, -1.0],
-    [4.5, 5.5, 6.1],
-    [-2.2, 3.3, 4.4],
-    [7.0, -8.0, 9.1]
+console.log("№2");
+
+const a1 = ["a", "b", "a", "c", "b", "a"];
+console.log("Массив: ", a1)
+console.log(countOccurrences(a1)); 
+console.log(" ");
+
+// 3. В массиве студентов подсчитать число обучающихся в самой большой группе. Номер группы – свойство класса Student типа string
+class Student {
+    constructor(name, group) {
+        this.name = name;
+        this.group = group;
+    }
+}
+
+function biggestGroup(students) {
+    if (!Array.isArray(students) || students.length === 0) return 0; 
+
+    const groupCounts = new Map();
+
+    for (const student of students) {
+        if (typeof student !== "object" || student === null || typeof student.group !== "string") {
+            return 0; 
+        }
+        groupCounts.set(student.group, (groupCounts.get(student.group) || 0) + 1);
+    }
+
+    return Math.max(...groupCounts.values(), 0);
+}
+
+console.log("№3");
+
+const students = [
+    new Student("Петя", "1"),
+    new Student("Катя", "2"),
+    new Student("Маша", "1"),
+    new Student("Артём", "3"),
+    new Student("Дима", "2"),
+    new Student("Андрей", "1"),
+    new Student("Миша", "2"),
+    new Student("Катя", "4"),
+    new Student("Антон", "3"),
+    new Student("Саша", "2")
+
 ];
-console.log("Матрица вещественных чисел: ", matrix);
-console.log("Сумма элементов в тех строках, которые содержат хотя бы один отрицательный элемент:", sumNegativeRows(matrix)); 
+console.log(students);
+console.log("Число обучающихся в самой большой группе: ", biggestGroup(students)); 
+console.log(" ");
